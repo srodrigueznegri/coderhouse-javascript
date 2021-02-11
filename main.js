@@ -1,9 +1,13 @@
-// alert("Hola! Quizas me conozcas como 'Stephi esta aburrida'")
+var firstName = prompt("Ingresa tu nombre");
+var surname = prompt("Ingresa tu apellido");
 
-var price = Number(prompt("Ingresa un precio"));
-
-if ((price <= 1000) && (price >= 0)) {
-    alert("Que barato!");
+if (!firstName && !surname){
+    alert("No escribiste ni tu nombre ni tu apellido")
+} else if (firstName && !surname){
+    alert("No escribiste tu apellido")
+} else if (!firstName && surname){
+    alert("No escribiste tu nombre")
 } else {
-    alert("Que caro!");
+    alert("Bienvenido/a " + firstName + " " + surname)
 }
+
