@@ -1,14 +1,25 @@
-var dias = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"];
+// Variables
 
-function esPar(numero){
-    return ((numero % 2) == 0);
+var precio = 0;
+var iva = 0.21;
+var precioFinal = 0;
+
+// Funciones
+
+function pedirPrecio(){
+    precio = Number(prompt("Ingresa un precio para calcular el IVA"));
 }
 
-for (var i=1; i<8; i++) {
-    if (i == 7){
-        alert("El dia numero 7 es el: " + dias[i-1]);
-    }
-    if (esPar(i)) {
-        console.log("El " + dias[i-1] + " es par.");
-    }
+function calcularPrecioFinal(){
+    precioFinal = precio + (precio * iva);
 }
+
+function mostrarPrecioFinal(){
+    alert("El precio con IVA es: $" + precioFinal);
+}
+
+// Ejecucion
+
+pedirPrecio();
+calcularPrecioFinal();
+mostrarPrecioFinal();
