@@ -1,8 +1,14 @@
+// Variable
+
 var dias = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"];
+
+// Funcion
 
 function esPar(numero){
     return ((numero % 2) == 0);
 }
+
+// Ejecucion
 
 for (var i=1; i<8; i++) {
     if (i == 7){
