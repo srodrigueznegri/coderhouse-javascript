@@ -1,25 +1,24 @@
-// Variables
+// Constantes
 
-var precio = 0;
-var iva = 0.21;
-var precioFinal = 0;
+const iva = 0.21;
 
 // Funciones
 
 function pedirPrecio(){
-    precio = Number(prompt("Ingresa un precio para calcular el IVA"));
+    return Number(prompt("Ingresa un precio para calcular el IVA"));
 }
 
-function calcularPrecioFinal(){
-    precioFinal = precio + (precio * iva);
+function calcularPrecioFinal(precio, impuesto){
+    return precio + (precio * impuesto);
 }
 
-function mostrarPrecioFinal(){
+function mostrarPrecioFinal(precioFinal){
     alert("El precio con IVA es: $" + precioFinal);
+    return;
 }
 
 // Ejecucion
 
-pedirPrecio();
-calcularPrecioFinal();
-mostrarPrecioFinal();
+var precio = pedirPrecio();
+var precioFinal = calcularPrecioFinal(precio, iva);
+mostrarPrecioFinal(precioFinal);
