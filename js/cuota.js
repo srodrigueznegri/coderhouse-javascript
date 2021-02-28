@@ -1,10 +1,28 @@
+// Clases
+
+class Nivel {
+    constructor (nombre, cantAlumnos, cuota) {
+        this.nombre = nombre;
+        this.cantAlumnos = cantAlumnos;
+        this.cuota = cuota;
+        this.cuotaTotal = this.calcularCuota();
+    }
+    solicitarCantidad () {
+        this.cantAlumnos = parseInt(prompt("¿Cuántos hijos/as tenés en el Nivel " + this.nombre.toUpperCase() + "?"));
+        this.calcularCuota();
+    }
+    calcularCuota() {
+        this.cuotaTotal = this.cuota * this.cantAlumnos;
+        return this.cuotaTotal;
+    }
+}
 
 // Variables y Constantes
 
-const alumnos = {
-    inicial: 0,
-    primario: 0,
-    secundario: 0,
+const niveles = {
+    inicial: {},
+    primario: {},
+    secundario: {},
 }
 
 const cuota = {
@@ -19,10 +37,6 @@ let totalCuota = 0;
 
 // Funciones
 
-function solicitarCantidad (alumnos, nivel){
-    alumnos[nivel] = parseInt(prompt("¿Cuántos hijos/as tenés en el Nivel " + nivel.toUpperCase() + "?"))
-}
-
 function calcularDescuento (cantAlumnos, cuotaTotal){
     if (cantAlumnos >= 3){
         return cuotaTotal * 0.25;
@@ -34,12 +48,14 @@ function calcularDescuento (cantAlumnos, cuotaTotal){
 function calcularPrecioFinal (cantAlumnos, cuotaTotal){
     return totalCuota - calcularDescuento(totalAlumnos, totalCuota);
 }
+
 // Ejecucion
 
-for(const nivel in alumnos) {
-    solicitarCantidad(alumnos, nivel);
-    totalAlumnos += alumnos[nivel];
-    totalCuota += alumnos[nivel] * cuota[nivel];
+for(const nivel in niveles) {
+    niveles[nivel] = new Nivel(nivel, 0, cuota[nivel]); 
+    niveles[nivel].solicitarCantidad();
+    totalAlumnos += niveles[nivel].cantAlumnos;
+    totalCuota += niveles[nivel].cuotaTotal;
 }
 
 alert("El total de la cuota sera de $ " + calcularPrecioFinal(totalAlumnos, totalCuota));
