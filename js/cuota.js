@@ -44,17 +44,24 @@ function calcularPrecioFinal (cantAlumnos, cuotaTotal){
     return totalCuota - calcularDescuento(totalAlumnos, totalCuota);
 }
 
+const nivelesMayorAMenorCuota = function(a, b) {
+    return b.cuotaTotal - a.cuotaTotal
+}
+
 // Ejecucion
 
 for (const nivel in cuotas) {
     niveles.push(new Nivel(nivel, 0, cuotas[nivel])); 
 }
-
+    
 for (const nivel of niveles) {
     nivel.solicitarCantidad();
     totalAlumnos += nivel.cantAlumnos;
     totalCuota += nivel.cuotaTotal;
 }
 
-alert("El total de la cuota sera de $ " + calcularPrecioFinal(totalAlumnos, totalCuota));
+const nivelesOrdenados = niveles.sort(nivelesMayorAMenorCuota);
 
+const nivelesConCuota = niveles.map(nivel => nivel.nombre + ": $" + nivel.cuotaTotal);
+
+alert("Las cuotas por nivel son: \n\n" + nivelesConCuota.join("\n") + "\n\nEl total de la cuota sera de $ " + calcularPrecioFinal(totalAlumnos, totalCuota));
