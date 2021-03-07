@@ -1,5 +1,4 @@
 // Clases
-
 class Nivel {
     constructor (nombre, cantAlumnos, cuota) {
         this.nombre = nombre;
@@ -19,13 +18,9 @@ class Nivel {
 
 // Variables y Constantes
 
-const niveles = {
-    inicial: {},
-    primario: {},
-    secundario: {},
-}
+const niveles = [];
 
-const cuota = {
+const cuotas = {
     inicial: 1000,
     primario: 1500,
     secundario: 2000,
@@ -51,11 +46,14 @@ function calcularPrecioFinal (cantAlumnos, cuotaTotal){
 
 // Ejecucion
 
-for(const nivel in niveles) {
-    niveles[nivel] = new Nivel(nivel, 0, cuota[nivel]); 
-    niveles[nivel].solicitarCantidad();
-    totalAlumnos += niveles[nivel].cantAlumnos;
-    totalCuota += niveles[nivel].cuotaTotal;
+for (const nivel in cuotas) {
+    niveles.push(new Nivel(nivel, 0, cuotas[nivel])); 
+}
+
+for (const nivel of niveles) {
+    nivel.solicitarCantidad();
+    totalAlumnos += nivel.cantAlumnos;
+    totalCuota += nivel.cuotaTotal;
 }
 
 alert("El total de la cuota sera de $ " + calcularPrecioFinal(totalAlumnos, totalCuota));
