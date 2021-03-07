@@ -60,7 +60,7 @@ for (const nivel of niveles) {
     totalCuota += nivel.cuotaTotal;
 }
 
-const nivelesOrdenados = niveles.sort(nivelesMayorAMenorCuota);
+niveles.sort(nivelesMayorAMenorCuota);
 
 const nivelesConCuota = niveles.map(nivel => nivel.nombre + ": $" + nivel.cuotaTotal);
 
