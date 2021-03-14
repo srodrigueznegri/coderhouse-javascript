@@ -19,11 +19,9 @@ class Nivel {
 
 // Variables y Constantes
 
-const niveles = {
-    inicial: {},
-    primario: {},
-    secundario: {},
-}
+const nombreNiveles = ["inicial", "primario", "secundario"];
+
+const niveles = [];
 
 const cuota = {
     inicial: 1000,
@@ -45,9 +43,19 @@ function calcularPrecioFinal (cantAlumnos, cuotaTotal){
     return cuotaTotal - calcularDescuento(cantAlumnos, cuotaTotal);
 }
 
-function mostrarCuota (totalAlumnos, totalCuota){
+function mostrarCuotas (niveles, totalAlumnos, totalCuota){
     const resultadoCuota = document.getElementById("resultadoCuota");
-    resultadoCuota.innerHTML=`<p>El total de la cuota sera de <strong>$ ${calcularPrecioFinal(totalAlumnos, totalCuota)}</strong></p>`;
+    let htmlCuotas = "";
+    for(let nivel of niveles) {
+        htmlCuotas += `<p>El total de la cuota del <strong>${nivel.nombre}</strong> sera de <strong>$ ${nivel.cuotaTotal}</strong></p>`;
+    }
+    const descuento = calcularDescuento(totalAlumnos, totalCuota);
+    if (descuento) {
+        htmlCuotas += `<p><strong>Beneficio</strong> por 3 o mas estudiantes: <strong>$ -${descuento}</strong></p>`;
+    }    
+    htmlCuotas += "<hr>";
+    htmlCuotas += `<p>El total de la cuota sera de <strong>$ ${calcularPrecioFinal(totalAlumnos, totalCuota)}</strong></p>`;
+    resultadoCuota.innerHTML=htmlCuotas;
 }
 
 function submitFormulario(e){
@@ -57,12 +65,12 @@ function submitFormulario(e){
 function recalcularCuota(e){
     let totalAlumnos = 0;
     let totalCuota = 0;
-    for(const nivel in niveles) {
-        niveles[nivel].solicitarCantidad();
-        totalAlumnos += niveles[nivel].cantAlumnos;
-        totalCuota += niveles[nivel].cuotaTotal;
+    for(const nivel of niveles) {
+        nivel.solicitarCantidad();
+        totalAlumnos += nivel.cantAlumnos;
+        totalCuota += nivel.cuotaTotal;
     }
-    mostrarCuota(totalAlumnos, totalCuota);
+    mostrarCuotas(niveles, totalAlumnos, totalCuota);
 }
 
 // Ejecucion
@@ -70,9 +78,9 @@ function recalcularCuota(e){
 let formularioCuota = document.getElementById("formularioCuota");
 formularioCuota.addEventListener("submit", submitFormulario);
 
-for(const nivel in niveles){
-    niveles[nivel] = new Nivel(nivel, 0, cuota[nivel]); 
-    let input = document.getElementById(nivel);
+for(const nombreNivel of nombreNiveles){
+    niveles.push(new Nivel(nombreNivel, 0, cuota[nombreNivel])); 
+    let input = document.getElementById(nombreNivel);
     input.addEventListener("change", recalcularCuota);
 }
 
