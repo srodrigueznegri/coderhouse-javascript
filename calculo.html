@@ -94,9 +94,36 @@
         </nav>
         <main>
             <div class="container">
+				<section>
+					<form id="formularioCuota" action="#" method="POST">
+						<h2 class="text-center">Calculá tu cuota</h2>
+                        <p class="text-center">Indicá cuántos hijos tenés en cada nivel:</p>
+						<div class="form-row">
+                            <div class="col-md-4 mb-3">
+							    <label for="inical">Nivel Inicial</label>
+                                <input type="number" value="0" class="form-control" id="inicial" name="inicial" required min="0" step="1">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="primario">Nivel Primario</label>
+                                <input type="number" value="0" class="form-control" id="primario" name="primario" required min="0" step="1">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="secundario">Nivel Secundario</label>
+                                <input type="number" value="0" class="form-control" id="secundario" name="secundario" required min="0" step="1">
+                            </div>
+                        </div>
+						<div class="centrado">
+							<div>
+								<button class="boton" type="submit" data-target="#staticBackdrop"><span>Calcular</span></button>
+                            </div>
+                        </div>
+					</form>
+                </section>
+                <section id="resultadoCuota">
+                </section>
             </div>
-            <div class="pencils"></div>
-        </main>
+			<div class="pencils"></div>
+		</main>
         <footer>
             <div class="container">
                 <div class="row align-items-center">

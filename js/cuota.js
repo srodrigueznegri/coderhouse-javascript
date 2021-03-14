@@ -8,7 +8,7 @@ class Nivel {
         this.cuotaTotal = this.calcularCuota();
     }
     solicitarCantidad () {
-        this.cantAlumnos = parseInt(prompt("¿Cuántos hijos/as tenés en el Nivel " + this.nombre.toUpperCase() + "?"));
+        this.cantAlumnos = parseInt(document.getElementById(this.nombre).value);
         this.calcularCuota();
     }
     calcularCuota() {
@@ -49,14 +49,25 @@ function calcularPrecioFinal (cantAlumnos, cuotaTotal){
     return totalCuota - calcularDescuento(totalAlumnos, totalCuota);
 }
 
-// Ejecucion
-
-for(const nivel in niveles) {
-    niveles[nivel] = new Nivel(nivel, 0, cuota[nivel]); 
-    niveles[nivel].solicitarCantidad();
-    totalAlumnos += niveles[nivel].cantAlumnos;
-    totalCuota += niveles[nivel].cuotaTotal;
+function mostrarCuota (totalAlumnos, totalCuota){
+    const resultadoCuota = document.getElementById("resultadoCuota");
+    resultadoCuota.innerHTML=`<p>El total de la cuota sera de <strong>$ ${calcularPrecioFinal(totalAlumnos, totalCuota)}</strong></p>`;
 }
 
-alert("El total de la cuota sera de $ " + calcularPrecioFinal(totalAlumnos, totalCuota));
+function validarFormulario(e){
+    e.preventDefault();
+    for(const nivel in niveles) {
+        niveles[nivel] = new Nivel(nivel, 0, cuota[nivel]); 
+        niveles[nivel].solicitarCantidad();
+        totalAlumnos += niveles[nivel].cantAlumnos;
+        totalCuota += niveles[nivel].cuotaTotal;
+    }
+    mostrarCuota(totalAlumnos, totalCuota);
+}
+
+// Ejecucion
+
+let formularioCuota = document.getElementById("formularioCuota");
+formularioCuota.addEventListener("submit", validarFormulario);
+
 
