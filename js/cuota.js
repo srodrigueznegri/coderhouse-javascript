@@ -31,10 +31,6 @@ const cuota = {
     secundario: 2000,
 }
 
-let totalAlumnos = 0;
-
-let totalCuota = 0;
-
 // Funciones
 
 function calcularDescuento (cantAlumnos, cuotaTotal){
@@ -46,7 +42,7 @@ function calcularDescuento (cantAlumnos, cuotaTotal){
 }
 
 function calcularPrecioFinal (cantAlumnos, cuotaTotal){
-    return totalCuota - calcularDescuento(totalAlumnos, totalCuota);
+    return cuotaTotal - calcularDescuento(cantAlumnos, cuotaTotal);
 }
 
 function mostrarCuota (totalAlumnos, totalCuota){
@@ -54,10 +50,14 @@ function mostrarCuota (totalAlumnos, totalCuota){
     resultadoCuota.innerHTML=`<p>El total de la cuota sera de <strong>$ ${calcularPrecioFinal(totalAlumnos, totalCuota)}</strong></p>`;
 }
 
-function validarFormulario(e){
+function submitFormulario(e){
     e.preventDefault();
+}
+
+function recalcularCuota(e){
+    let totalAlumnos = 0;
+    let totalCuota = 0;
     for(const nivel in niveles) {
-        niveles[nivel] = new Nivel(nivel, 0, cuota[nivel]); 
         niveles[nivel].solicitarCantidad();
         totalAlumnos += niveles[nivel].cantAlumnos;
         totalCuota += niveles[nivel].cuotaTotal;
@@ -68,6 +68,11 @@ function validarFormulario(e){
 // Ejecucion
 
 let formularioCuota = document.getElementById("formularioCuota");
-formularioCuota.addEventListener("submit", validarFormulario);
+formularioCuota.addEventListener("submit", submitFormulario);
 
+for(const nivel in niveles){
+    niveles[nivel] = new Nivel(nivel, 0, cuota[nivel]); 
+    let input = document.getElementById(nivel);
+    input.addEventListener("change", recalcularCuota);
+}
 
