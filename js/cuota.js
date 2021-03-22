@@ -1,5 +1,4 @@
 // Clases
-
 class Nivel {
     constructor (nombre, cantAlumnos, cuota) {
         this.nombre = nombre;
@@ -93,7 +92,7 @@ for (const nombreNivel of nombreNiveles){
 const nivelesGuardados = localStorage.getItem("niveles");
 // Si hay datos guardados cargamos los datos en el formulario y recalculamos
 if (nivelesGuardados) {
-    // parseamosel JSON como un array de objetos
+    // parseamos el JSON como un array de objetos
     const nivelesSinMetodo = JSON.parse(nivelesGuardados);
     for (let nivel of nivelesSinMetodo){
         // cargamos el array de objetos con objetos de la clase Nivel
