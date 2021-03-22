@@ -21,7 +21,7 @@ class Nivel {
 
 const nombreNiveles = ["inicial", "primario", "secundario"];
 
-const niveles = [];
+let niveles = [];
 
 const cuota = {
     inicial: 1000,
@@ -47,7 +47,9 @@ function mostrarCuotas (niveles, totalAlumnos, totalCuota){
     const resultadoCuota = document.getElementById("resultadoCuota");
     let htmlCuotas = "";
     for(let nivel of niveles) {
-        htmlCuotas += `<p>El total de la cuota del <strong>${nivel.nombre}</strong> sera de <strong>$ ${nivel.cuotaTotal}</strong></p>`;
+        if (nivel.cuotaTotal) {
+            htmlCuotas += `<p>El total de la cuota del <strong>${nivel.nombre}</strong> sera de <strong>$ ${nivel.cuotaTotal}</strong></p>`;
+        }
     }
     const descuento = calcularDescuento(totalAlumnos, totalCuota);
     if (descuento) {
@@ -67,9 +69,12 @@ function recalcularCuota(e){
     let totalCuota = 0;
     for(const nivel of niveles) {
         nivel.solicitarCantidad();
-        totalAlumnos += nivel.cantAlumnos;
-        totalCuota += nivel.cuotaTotal;
+        if (nivel.cuotaTotal) {
+            totalAlumnos += nivel.cantAlumnos;
+            totalCuota += nivel.cuotaTotal;
+        }
     }
+    localStorage.setItem("niveles", JSON.stringify(niveles));
     mostrarCuotas(niveles, totalAlumnos, totalCuota);
 }
 
@@ -78,9 +83,30 @@ function recalcularCuota(e){
 let formularioCuota = document.getElementById("formularioCuota");
 formularioCuota.addEventListener("submit", submitFormulario);
 
-for(const nombreNivel of nombreNiveles){
-    niveles.push(new Nivel(nombreNivel, 0, cuota[nombreNivel])); 
+// Asignamos la funcion recalcularCuota a cada input
+for (const nombreNivel of nombreNiveles){
     let input = document.getElementById(nombreNivel);
-    input.addEventListener("change", recalcularCuota);
+    input.addEventListener("input", recalcularCuota);
 }
 
+// Traemos los ultimos datos ingresados por el usuario
+const nivelesGuardados = localStorage.getItem("niveles");
+// Si hay datos guardados cargamos los datos en el formulario y recalculamos
+if (nivelesGuardados) {
+    // parseamosel JSON como un array de objetos
+    const nivelesSinMetodo = JSON.parse(nivelesGuardados);
+    for (let nivel of nivelesSinMetodo){
+        // cargamos el array de objetos con objetos de la clase Nivel
+        // para tener acces a los metodos de la clase
+        niveles.push(new Nivel(nivel.nombre, nivel.cantAlumnos, nivel.cuota));
+        // cargar cantAlumnos en el input correspondiente
+        let input = document.getElementById(nivel.nombre);
+        input.value = nivel.cantAlumnos;
+    }
+    recalcularCuota();
+} else {
+    // si no hay elementos guardados inicializamos el array de objetos niveles sin alumnos
+    for (const nombreNivel of nombreNiveles){
+        niveles.push(new Nivel(nombreNivel, 0, cuota[nombreNivel]));
+    }
+}
