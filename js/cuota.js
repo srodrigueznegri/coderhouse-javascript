@@ -7,7 +7,7 @@ class Nivel {
         this.cuotaTotal = this.calcularCuota();
     }
     solicitarCantidad () {
-        this.cantAlumnos = parseInt(document.getElementById(this.nombre).value);
+        this.cantAlumnos = parseInt($('#'+this.nombre).val());
         this.calcularCuota();
     }
     calcularCuota() {
@@ -43,7 +43,6 @@ function calcularPrecioFinal (cantAlumnos, cuotaTotal){
 }
 
 function mostrarCuotas (niveles, totalAlumnos, totalCuota){
-    const resultadoCuota = document.getElementById("resultadoCuota");
     let htmlCuotas = "";
     for(let nivel of niveles) {
         if (nivel.cuotaTotal) {
@@ -56,7 +55,7 @@ function mostrarCuotas (niveles, totalAlumnos, totalCuota){
     }    
     htmlCuotas += "<hr>";
     htmlCuotas += `<p>El total de la cuota sera de <strong>$ ${calcularPrecioFinal(totalAlumnos, totalCuota)}</strong></p>`;
-    resultadoCuota.innerHTML=htmlCuotas;
+    $('#resultadoCuota').html(htmlCuotas);
 }
 
 function submitFormulario(e){
@@ -79,33 +78,34 @@ function recalcularCuota(e){
 
 // Ejecucion
 
-let formularioCuota = document.getElementById("formularioCuota");
-formularioCuota.addEventListener("submit", submitFormulario);
-
-// Asignamos la funcion recalcularCuota a cada input
-for (const nombreNivel of nombreNiveles){
-    let input = document.getElementById(nombreNivel);
-    input.addEventListener("input", recalcularCuota);
-}
-
-// Traemos los ultimos datos ingresados por el usuario
-const nivelesGuardados = localStorage.getItem("niveles");
-// Si hay datos guardados cargamos los datos en el formulario y recalculamos
-if (nivelesGuardados) {
-    // parseamos el JSON como un array de objetos
-    const nivelesSinMetodo = JSON.parse(nivelesGuardados);
-    for (let nivel of nivelesSinMetodo){
-        // cargamos el array de objetos con objetos de la clase Nivel
-        // para tener acces a los metodos de la clase
-        niveles.push(new Nivel(nivel.nombre, nivel.cantAlumnos, nivel.cuota));
-        // cargar cantAlumnos en el input correspondiente
-        let input = document.getElementById(nivel.nombre);
-        input.value = nivel.cantAlumnos;
-    }
-    recalcularCuota();
-} else {
-    // si no hay elementos guardados inicializamos el array de objetos niveles sin alumnos
+$(document).ready(function() {
+    $('#formularioCuota').submit(submitFormulario);
+    
+    // Asignamos la funcion recalcularCuota a cada input
     for (const nombreNivel of nombreNiveles){
-        niveles.push(new Nivel(nombreNivel, 0, cuota[nombreNivel]));
+        $('#'+nombreNivel).on('input', recalcularCuota);
     }
-}
+    
+    // Traemos los ultimos datos ingresados por el usuario
+    const nivelesGuardados = localStorage.getItem("niveles");
+    // Si hay datos guardados cargamos los datos en el formulario y recalculamos
+    if (nivelesGuardados) {
+        // parseamos el JSON como un array de objetos
+        const nivelesSinMetodo = JSON.parse(nivelesGuardados);
+        for (let nivel of nivelesSinMetodo){
+            // cargamos el array de objetos con objetos de la clase Nivel
+            // para tener acces a los metodos de la clase
+            niveles.push(new Nivel(nivel.nombre, nivel.cantAlumnos, nivel.cuota));
+            // cargar cantAlumnos en el input correspondiente
+            $('#'+nivel.nombre).val(nivel.cantAlumnos);
+        }
+        recalcularCuota();
+    } else {
+        // si no hay elementos guardados inicializamos el array de objetos niveles sin alumnos
+        for (const nombreNivel of nombreNiveles){
+            niveles.push(new Nivel(nombreNivel, 0, cuota[nombreNivel]));
+        }
+    }
+});
+
+
