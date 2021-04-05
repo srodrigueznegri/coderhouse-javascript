@@ -56,6 +56,7 @@ function mostrarCuotas (niveles, totalAlumnos, totalCuota){
     htmlCuotas += "<hr>";
     htmlCuotas += `<p>El total de la cuota sera de <strong>$ ${calcularPrecioFinal(totalAlumnos, totalCuota)}</strong></p>`;
     $('#resultadoCuota').html(htmlCuotas);
+    aparecerCuotas();
 }
 
 function submitFormulario(e){
@@ -74,6 +75,27 @@ function recalcularCuota(e){
     }
     localStorage.setItem("niveles", JSON.stringify(niveles));
     mostrarCuotas(niveles, totalAlumnos, totalCuota);
+}
+
+function aparecerCuotas() {
+    aparecerCuota(1, 
+        () => aparecerCuota(2, 
+            () => aparecerCuota(3, 
+                () => aparecerCuota(4, 
+                    () => aparecerCuota(5, 
+                        () => aparecerCuota(6)
+                    )
+                )
+            )
+        )
+    );
+}
+
+function aparecerCuota(index, callback = null) {
+    if (callback) {
+        return $(`#resultadoCuota > *:nth-child(${index})`).fadeIn('slow', callback);
+    }
+  return $(`#resultadoCuota > *:nth-child(${index})`).fadeIn('slow');
 }
 
 // Ejecucion
