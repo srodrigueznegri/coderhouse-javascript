@@ -92,10 +92,7 @@ function aparecerCuotas() {
 }
 
 function aparecerCuota(index, callback = null) {
-    if (callback) {
-        return $(`#resultadoCuota > *:nth-child(${index})`).fadeIn('slow', callback);
-    }
-  return $(`#resultadoCuota > *:nth-child(${index})`).fadeIn('slow');
+    $(`#resultadoCuota > *:nth-child(${index})`).fadeIn('slow', callback);
 }
 
 // Ejecucion
