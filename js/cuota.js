@@ -1,3 +1,4 @@
+
 // Clases
 class Nivel {
     constructor (nombre, cantAlumnos, cuota) {
@@ -42,9 +43,11 @@ function calcularPrecioFinal (cantAlumnos, cuotaTotal){
 
 function mostrarCuotas (niveles, totalAlumnos, totalCuota){
     let htmlCuotas = "";
+    let queryAlumnos = "";
     for(let nivel of niveles) {
         if (nivel.cuotaTotal) {
             htmlCuotas += `<p>El total de la cuota del <strong>${nivel.nombre}</strong> sera de <strong>$ ${nivel.cuotaTotal}</strong></p>`;
+            queryAlumnos += `&${nivel.nombre}=${nivel.cantAlumnos}`;
         }
     }
     const descuento = calcularDescuento(totalAlumnos, totalCuota);
@@ -53,6 +56,7 @@ function mostrarCuotas (niveles, totalAlumnos, totalCuota){
     }    
     htmlCuotas += "<hr>";
     htmlCuotas += `<p>El total de la cuota sera de <strong>$ ${calcularPrecioFinal(totalAlumnos, totalCuota)}</strong></p>`;
+    htmlCuotas += `<p><a href="contactanos.html?&sector=A${queryAlumnos}">Solicitar vacante</a></p>`
     $('#resultadoCuota').html(htmlCuotas);
     aparecerCuotas();
 }
@@ -81,7 +85,9 @@ function aparecerCuotas() {
             () => aparecerCuota(3, 
                 () => aparecerCuota(4, 
                     () => aparecerCuota(5, 
-                        () => aparecerCuota(6)
+                        () => aparecerCuota(6,
+                            () => aparecerCuota(7)
+                        )
                     )
                 )
             )
@@ -132,10 +138,6 @@ $(document).ready(function() {
             alert("Hubo un error al traer los datos. Por favor, recargue la pagina.");
         }
     });
-
-
-
-    
 });
 
 
